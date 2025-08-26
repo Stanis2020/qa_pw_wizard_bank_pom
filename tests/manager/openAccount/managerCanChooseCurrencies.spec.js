@@ -1,8 +1,18 @@
 import { test } from '@playwright/test';
-import { faker } from '@faker-js/faker';
+import { OpenAccountPage } from '../../../src/pages/manager/OpenAccountPage';
 
 test('Assert manager can choose currencies for account', async ({ page }) => {
-  /* 
+  const openAccountPage = new OpenAccountPage(page);
+
+  await openAccountPage.open();
+  await openAccountPage.chooseDollarCurrency('Dollar');
+  await openAccountPage.assertShownCurrencyValue('Dollar');
+  await openAccountPage.chooseDollarCurrency('Pound');
+  await openAccountPage.assertShownCurrencyValue('Pound');
+  await openAccountPage.chooseDollarCurrency('Rupee');
+  await openAccountPage.assertShownCurrencyValue('Rupee');
+});
+/* 
   Test:
   1. Open the Open account page 
     https://www.globalsqa.com/angularJs-protractor/BankingProject/#/manager/openAccount
@@ -13,4 +23,3 @@ test('Assert manager can choose currencies for account', async ({ page }) => {
   6. Select currency Rupee
   7. Assert the drop-dwon has value Rupee
   */
-});
