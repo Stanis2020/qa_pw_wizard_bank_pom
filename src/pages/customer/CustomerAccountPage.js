@@ -7,7 +7,7 @@ export class CustomerAccountPage {
     this.accountDataLine = page
       .locator('div')
       .filter({
-        hasText: 'Account Number',
+        hasText: 'Account Number : ',
       })
       .first();
     this.depositButton = page.getByRole('button', { name: 'Deposit' });
@@ -16,6 +16,7 @@ export class CustomerAccountPage {
     });
     this.withdrawlButton = page.getByRole('button', { name: 'Withdraw' });
     this.amountInputField = page.getByPlaceholder('amount');
+    this.amountInputWithdrawField = page.getByText('Amount to be Withdrawn :');
     this.depositFormButton = page.getByRole('form').getByRole('button', {
       name: 'Deposit',
     });
@@ -27,6 +28,7 @@ export class CustomerAccountPage {
       'Transaction Failed. You can not withdraw amount more than the balance.',
     );
     this.logoutButton = page.getByRole('button', { name: 'Logout' });
+    this.withdrawSuccessfullMessage = page.getByText('Transaction successful');
   }
 
   async open() {
@@ -36,6 +38,10 @@ export class CustomerAccountPage {
   async assertAccountIdInDropDownHasValue(value) {
     const accountNumberInDrodown = this.accountIdDropDown;
     await expect(accountNumberInDrodown).toHaveValue(value);
+  }
+
+  async selectAccountNumber(value) {
+    await this.accountIdDropDown.selectOption(value);
   }
 
   async assertAccountLineContainsText(text) {
@@ -58,6 +64,14 @@ export class CustomerAccountPage {
     await this.amountInputField.fill(amount);
   }
 
+  async assertAmountInputWithdrawField(text) {
+    await expect(this.amountInputWithdrawField).toContainText(text);
+  }
+
+  async assertVisibleWithdrawlField() {
+    await this.amountInputField.toBeVisible();
+  }
+
   async clickDepositFormButton() {
     await this.depositFormButton.click();
   }
@@ -77,4 +91,8 @@ export class CustomerAccountPage {
   async assertWithdrawNoBalanceErrorMessageIsVisible() {
     await expect(this.withdrawNoBalanceErrorMessage).toBeVisible();
   }
+
+  async assertWithrawSuccessfulMessageIsVisible(text) {
+    await expect(this.withdrawSuccessfullMessage).toBeVisible(text);
+  } 
 }
